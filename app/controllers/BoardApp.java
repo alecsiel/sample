@@ -14,7 +14,7 @@ import views.html.board.boardView;
 import views.html.board.boardWrite;
 
 public class BoardApp extends Controller {
-
+/*
 	public static Result init() {
 		//add sample data
 		
@@ -29,7 +29,7 @@ public class BoardApp extends Controller {
 		}
 		
 		return ok("init ok");
-	}
+	}*/
 	
 	public static Result list(int page) {
 		

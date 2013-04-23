@@ -8,7 +8,6 @@ GET     /                           controllers.Application.index()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-GET		/init						controllers.BoardApp.init()
 GET		/list						controllers.BoardApp.list(page: Integer ?= 1)
 
 GET		/view/:id					controllers.BoardApp.view(id:Long)
