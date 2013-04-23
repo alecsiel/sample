@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.board.boardList;
 import views.html.board.boardView;
+import views.html.board.boardWrite;
 
 public class BoardApp extends Controller {
 
@@ -29,16 +31,14 @@ public class BoardApp extends Controller {
 		return ok("init ok");
 	}
 	
-	public static Result list() {
+	public static Result list(int page) {
 		
-		String page = request().getQueryString("page");
-		
-		int pageSize = 10;
+		int pageSize = 20;
 		List<Article> list = Article.finder
 				.where()
 				.orderBy("id asc")
 				.findPagingList(pageSize)
-				.getPage(Integer.parseInt(page) - 1)
+				.getPage(page - 1)
 				.getList();
 		
 		return ok(boardList.render("List Page", list));
@@ -51,14 +51,39 @@ public class BoardApp extends Controller {
 		return ok(boardView.render("View Page", article));
 	}
 	
+	public static Result writeArticleForm() {
+		Form<Article> articleForm = Form.form(Article.class);
+		return ok(boardWrite.render("Write Page", articleForm, new Article())); 
+	}
 	
-	public static Result inputForm() {
+	public static Result editArticleForm(Long id) {
+		if(id == null) {
+			return badRequest();
+		}
 		
-		return ok("inputForm");
+		Article article = Article.finder.byId(id);
+		Form<Article> articleForm = Form.form(Article.class);
+		
+		if (article == null) {
+			article = new Article();
+		}
+		articleForm.fill(article);
+		
+		return ok(boardWrite.render("Write Page", articleForm, article));
 	}
 	
 	public static Result save() {
-		return redirect(routes.BoardApp.list());
+		Form<Article> articleForm = Form.form(Article.class).bindFromRequest();
+		Article article = articleForm.get();		
+		
+		if(article.id != null) { 
+			article.update();			
+		} else {
+			article.createDate = new Date();
+			article.save();
+		}
+		
+		return redirect(routes.BoardApp.list(1));
 	}
 	
 	public static Result saveComment(Long articleId) {
@@ -77,7 +102,6 @@ public class BoardApp extends Controller {
 		Comment comment = Comment.finder.byId(commentId);
 		comment.delete();
 
-		//aaaaaso;dasdl;jasldjkasdklajsdkjasdklj
 		return redirect(routes.BoardApp.view(articleId));
 	}
 

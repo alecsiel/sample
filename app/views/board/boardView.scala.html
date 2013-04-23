@@ -45,6 +45,7 @@
 <li><input type="text" name="name" value="" /> : <input name="text" style="width:50%;" type="text" value="" /><input type="submit" value="comment"/>
 </form>
 </ul>
-<input type="button" value="list" onclick="location.href='@routes.BoardApp.list()?page=1'">
+<input type="button" value="list" onclick="location.href='@routes.BoardApp.list()'">
+<input type="button" value="edit" onclick="location.href='@routes.BoardApp.editArticleForm(article.id)'">
 </body>
 </html>

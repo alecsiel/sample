@@ -1,0 +1,31 @@
+@(message: String, articleForm: Form[Article], article:Article)
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>welcome @message</title>
+</head>
+<body>
+<h2>@message</h2>
+
+<form name="form" action="@routes.BoardApp.save()" method="post">
+<input type="hidden" name="id" value="@article.id" />
+<table>
+<colgroup>
+	<col width="30%">
+	<col width="70%">
+</colgroup>
+<tr>
+	<th>name</th>
+	<td><input type="text" name="name" value="@article.name" /></td>
+</tr>
+<tr>
+	<th>contents</th>  
+	<td><textarea style="width:400px;height:300px;"name="contents">@article.contents</textarea></td>
+</tr>
+</table>
+<input type="submit" value="save" />
+</form>
+
+</body> 
+</html>
