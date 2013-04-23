@@ -34,7 +34,7 @@
 
 @** 재사용 블럭 *@
 @display(comment:models.Comment) = {
-	<li>@comment.name -> @comment.text<a href="@routes.BoardApp.deleteComment(article.id, comment.id)">삭제</a></li>
+	<li>[@comment.id] @comment.name -> @comment.text<a href="@routes.BoardApp.deleteComment(article.id, comment.id)">삭제</a></li>
 }
 <ul>
 @article.comments.map { comment => 

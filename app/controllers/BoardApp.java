@@ -76,7 +76,7 @@ public class BoardApp extends Controller {
 	public static Result deleteComment(Long articleId, Long commentId) {
 		Comment comment = Comment.finder.byId(commentId);
 		comment.delete();
-	
+
 		//aaaaaso;dasdl;jasldjkasdklajsdkjasdklj
 		return redirect(routes.BoardApp.view(articleId));
 	}
