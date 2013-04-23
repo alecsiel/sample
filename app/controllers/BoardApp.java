@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import models.Article;
+import models.Comment;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.board.boardList;
@@ -20,6 +22,7 @@ public class BoardApp extends Controller {
 			article.contents = "test data";
 			article.name = "wansoon : " + i;
 			article.createDate = new Date();
+								
 			article.save();
 		}
 		
@@ -33,29 +36,49 @@ public class BoardApp extends Controller {
 		int pageSize = 10;
 		List<Article> list = Article.finder
 				.where()
-				.orderBy("id desc")
+				.orderBy("id asc")
 				.findPagingList(pageSize)
 				.getPage(Integer.parseInt(page) - 1)
 				.getList();
-
+		
 		return ok(boardList.render("List Page", list));
 	}
 	
 	public static Result view(Long id) {
-		
-		System.out.println(id);
-		Article article = Article.finder.byId(id);
 
+		Article article = Article.finder.byId(id);
+		
 		return ok(boardView.render("View Page", article));
 	}
 	
 	
 	public static Result inputForm() {
+		
 		return ok("inputForm");
 	}
 	
 	public static Result save() {
 		return redirect(routes.BoardApp.list());
+	}
+	
+	public static Result saveComment(Long articleId) {
+		
+		Form<Comment> commentForm = Form.form(Comment.class).bindFromRequest();
+
+		Comment comment = commentForm.get();
+
+		comment.article = Article.finder.byId(articleId);
+		comment.save();
+		
+		return redirect(routes.BoardApp.view(articleId));
+	}
+	
+	public static Result deleteComment(Long articleId, Long commentId) {
+		Comment comment = Comment.finder.byId(commentId);
+		comment.delete();
+	
+		//aaaaaso;dasdl;jasldjkasdklajsdkjasdklj
+		return redirect(routes.BoardApp.view(articleId));
 	}
 
 }
