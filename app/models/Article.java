@@ -1,9 +1,12 @@
 package models;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import play.data.format.Formats;
@@ -16,6 +19,7 @@ import play.db.ebean.Model;
 public class Article extends Model {
 	
 	private static final long serialVersionUID = -4743335036682300002L;
+	public static Finder<Long, Article> finder = new Finder<Long, Article>(Long.class, Article.class);
 
 	@Id
 	@SequenceGenerator(name = "article_seq")
@@ -29,5 +33,10 @@ public class Article extends Model {
 	@Formats.DateTime(pattern="dd/MM/yyyy")
 	public Date createDate;
 	
-	public static Finder<Long, Article> finder = new Finder<Long, Article>(Long.class, Article.class);
+	@OneToMany(cascade = CascadeType.ALL)
+	public List<Comment> comments;
+	
+	public int getCommentCount() {
+		return comments.size();
+	}
 }

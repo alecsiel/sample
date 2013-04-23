@@ -9,10 +9,42 @@
 <body>
 <h2>@message</h2>
 
-<dl>
-	<dt>@article.name</dt>
-	<dd>@article.createDate</dd>
-	<dd>@article.contents</dd>
-</dl>
+<table>
+<colgroup>
+	<col width="30%">
+	<col width="70%">
+</colgroup>
+<tr>
+	<th>name</th>
+	<td>@article.name</td>
+</tr>
+<tr>
+	<th>createDate</th>
+	<td>@article.createDate</td>
+</tr>
+<tr>
+	<th>contents</th>
+	<td>@article.contents</td>
+</tr>
+<tr>
+	<th>commentCount</th>
+	<td>@article.getCommentCount()</td>
+</tr>	
+</table>
+
+@** 재사용 블럭 *@
+@display(comment:models.Comment) = {
+	<li>@comment.name -> @comment.text<a href="@routes.BoardApp.deleteComment(article.id, comment.id)">삭제</a></li>
+}
+<ul>
+@article.comments.map { comment => 
+	@display(comment)
+}
+
+<form name="form" action="@routes.BoardApp.saveComment(article.id)" method="POST">
+<li><input type="text" name="name" value="" /> : <input name="text" style="width:50%;" type="text" value="" /><input type="submit" value="comment"/>
+</form>
+</ul>
+<input type="button" value="list" onclick="location.href='@routes.BoardApp.list()?page=1'">
 </body>
 </html>
